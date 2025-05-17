@@ -1,7 +1,7 @@
 <template>
   <div v-if="!loading" class="main">
-    <input class="input" type="text" placeholder="Search" />
-    <div v-if="pokemonList.length > 0" v-for="(pokemon, index) in pokemonList" :key="index">
+    <input v-model="search" class="input" type="text" placeholder="Search" />
+    <div v-if="displayData.length > 0" v-for="(pokemon, index) in displayData" :key="index">
       <div class="card">
         <div>{{ pokemon.name }}</div>
         <div>
@@ -10,13 +10,13 @@
               v-if="pokemon.isFavorite"
               src="@/assets/img/active-fav.svg"
               alt="active"
-              @click="pokemon.isFavorite = false"
+              @click="setFavorite(pokemon)"
             />
             <img
               v-else
               src="@/assets/img/disabled-fav.svg"
               alt="disable"
-              @click="pokemon.isFavorite = true"
+              @click="setFavorite(pokemon)"
             />
           </div>
         </div>
@@ -50,23 +50,39 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onBeforeMount, ref } from 'vue'
+import { computed, inject, onBeforeMount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Star from '@/components/icons/Star.vue'
 import All from '@/components/icons/All.vue'
+import { useFavoritesStore } from '@/stores/favorites.ts'
 
 const router = useRouter()
+const { addToFavorites, removeFromFavorites } = useFavoritesStore()
 const axios = inject('axios')
+const search = ref('')
 const pokemonList = ref([])
 const loading = ref(true)
 const favoriteActive = ref(false)
+
+const displayData = computed(() => {
+  const { favoritesList } = useFavoritesStore()
+  if (favoriteActive.value) {
+    return favoritesList.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(search.value.toLowerCase()),
+    )
+  } else {
+    return pokemonList.value.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(search.value.toLowerCase()),
+    )
+  }
+})
 
 onBeforeMount(async () => {
   const response = await axios.get('/pokemon')
   const { results } = response.data
   results.forEach((poke) => {
     const pokemon = {
-      id: poke.id,
+      id: poke.name,
       name: poke.name,
       image: 'https://pokeapi.co/media/sprites/pokemon/' + poke.id + '.png',
       isFavorite: false,
@@ -77,6 +93,11 @@ onBeforeMount(async () => {
     loading.value = false
   }, 2500)
 })
+
+const setFavorite = (pokemon) => {
+  pokemon.isFavorite = !pokemon.isFavorite
+  pokemon.isFavorite ? addToFavorites(pokemon) : removeFromFavorites(pokemon)
+}
 </script>
 
 <style>
