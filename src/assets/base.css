@@ -1,0 +1,60 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+  line-height: 1.6;
+  font-family:
+    "Lato",
+    -apple-system,
+    BlinkMacSystemFont,
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+p {
+  font-size: 18px;
+  font-weight: 500;
+  color: #5E5E5E;
+}
+
+.button {
+  width: 131px;
+  height: 44px;
+  border-radius: 60px;
+  padding: 11px 20px 11px 20px;
+  gap: 10px;
+  background: #F22539;
+  color: white;
+  cursor: pointer;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.button:active {
+  background: #C00E20;
+  color: white;
+}
