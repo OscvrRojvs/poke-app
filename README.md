@@ -10,6 +10,7 @@
 - se creo la carpeta utils para centralizar los metodos que se desean reutilizar, en este caso se creó un metodo para formatear un texto (poner la primera letra en mayuscula)
 - se integraron fuentes desde google font, para este caso se agregaron los links a html y se usaron en el css base.
 - para formato y orden del codigo se usó prettier y eslint.
+- para el modal que muestra el detalle de un pokemon, se utilizo la nueva etiqueta de html "dialog" y se referenció en el script con un metodo de vue "ref"
 
 ## Project Setup
 
